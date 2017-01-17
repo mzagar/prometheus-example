@@ -1,0 +1,54 @@
+version: "2"
+
+services:
+  promserver:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/alerts/:/etc/alerts/
+    links:
+      - alertmanager
+      - node1
+      - node2
+      - cadvisor
+    command: -config.file=/etc/prometheus/prometheus.yml -alertmanager.url=http://alertmanager:9093
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    links:
+      - promserver
+
+  alertmanager:
+    image: prom/alertmanager
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./prometheus/alertmanager.yml:/etc/alertmanager/config.yml
+
+  
+  node1:
+    image: prom/node-exporter
+    ports:
+      - "9100:9100"
+
+  node2:
+    image: prom/node-exporter
+    ports:
+      - "9200:9100"
+
+  cadvisor:
+    image: google/cadvisor
+    ports:
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+
+
+

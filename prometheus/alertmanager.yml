@@ -1,0 +1,32 @@
+# global:
+#   smtp_smarthost: 'smtp.somewhere.local:25'
+#   smtp_from: 'prometheus@somewhere.com'
+
+route:
+  group_by: ['job']
+  group_wait: 10s
+  group_interval: 30s
+  repeat_interval: 5m
+  receiver: team-x
+
+  routes:
+  - match:
+      team: team-x
+    receiver: team-x
+    group_by: ['service', 'location']
+
+receivers:
+  - name: 'team-x'
+    hipchat_configs:
+    # - send_resolved: true
+    #   auth_token: 492fBEd8mtNxxxxxxxxxxxE5IUl1TCsrKZc
+    #   room_id: 2821212
+    #   message_format: html
+    #   notify: true
+    # email_configs:
+    # - send_resolved: true
+    #   to: 'team-x@somewhere.com'
+    #   require_tls: false
+    webhook_configs:
+      - send_resolved: true
+        url: http://requestb.in/16ph5o81
