@@ -5,6 +5,11 @@ global:
 rule_files:
   - "/etc/alerts/*.alert"
 
+alerting:
+  alertmanagers:
+    - static_configs:
+      - targets: ["alertmanager:9093"]
+
 scrape_configs:
   # Scrape Prometheus itself
   - job_name: 'prometheus'
