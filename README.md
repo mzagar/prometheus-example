@@ -20,3 +20,9 @@ $ open http://localhost:9093
 $ curl http://localhost:12345/api/values // will increase 'myCounter' counter
 $ curl http://localhost:12345/metrics
 ```
+
+To stress test aspnetapp use vegeta:
+
+```
+$ docker run oba11/vegeta sh -c 'echo "GET http://localhost:12345/api/values" | vegeta attack -duration=10s | tee results.bin | vegeta report'
+```
