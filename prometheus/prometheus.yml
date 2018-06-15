@@ -33,3 +33,10 @@ scrape_configs:
         labels:
           location: machine2
 
+  - job_name: 'aspnetapp'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['aspnetapp:80']
+        labels:
+          location: machine3
+          type: dotnet

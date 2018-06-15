@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 
 services:
   promserver:
@@ -13,6 +13,7 @@ services:
       - node1
       - node2
       - cadvisor
+      - aspnetapp
     command: --config.file=/etc/prometheus/prometheus.yml
 
   grafana:
@@ -39,6 +40,13 @@ services:
     image: prom/node-exporter
     ports:
       - "9200:9100"
+
+  aspnetapp:
+    build:
+      context: ./aspnetapp/aspnetapp
+      dockerfile: Dockerfile
+    ports: 
+      - "12345:80"
 
   cadvisor:
     image: google/cadvisor
